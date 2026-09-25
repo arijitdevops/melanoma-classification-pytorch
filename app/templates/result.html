@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Prediction result{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-9">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1 class="h4 mb-0">Result for <span class="text-body-secondary">{{ filename }}</span></h1>
+      <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary btn-sm">
+        Analyse another image
+      </a>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <div class="d-flex align-items-baseline gap-3 flex-wrap">
+          <span class="badge fs-6 {% if result.predicted_class == 'Malignant' %}text-bg-danger{% else %}text-bg-success{% endif %}">
+            {{ result.predicted_class }}
+          </span>
+          <span class="fs-5">Confidence {{ '%.1f'|format(result.confidence * 100) }}%</span>
+          <span class="text-body-secondary small">
+            decision threshold {{ '%.2f'|format(result.threshold) }}
+          </span>
+        </div>
+
+        <hr />
+
+        <h2 class="h6 text-uppercase text-body-secondary">Class probabilities</h2>
+        {% for name, probability in result.probabilities.items() %}
+          <div class="mb-2">
+            <div class="d-flex justify-content-between small">
+              <span>{{ name }}</span>
+              <span>{{ '%.3f'|format(probability) }}</span>
+            </div>
+            <div class="progress" role="progressbar" aria-label="{{ name }} probability"
+                 aria-valuenow="{{ (probability * 100)|round(1) }}" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar {% if name == 'Malignant' %}bg-danger{% else %}bg-success{% endif %}"
+                   style="width: {{ (probability * 100)|round(1) }}%"></div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-header fw-semibold">Uploaded image</div>
+          <div class="card-body text-center">
+            <img src="{{ original_uri }}" alt="Uploaded lesion" class="img-fluid rounded result-image" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-header fw-semibold">Grad-CAM overlay</div>
+          <div class="card-body text-center">
+            {% if overlay_uri %}
+              <img src="{{ overlay_uri }}" alt="Grad-CAM heatmap overlay" class="img-fluid rounded result-image" />
+              <p class="small text-body-secondary mt-2 mb-0">
+                Warmer colours mark regions that increased the malignant score.
+              </p>
+            {% else %}
+              <p class="text-body-secondary mb-0">
+                The heatmap could not be generated for this image.
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-secondary mt-4 small mb-0" role="alert">
+      This result comes from a demonstration model trained on a public dataset. It is
+      not a diagnosis. Any concern about a skin lesion should be assessed by a clinician.
+    </div>
+  </div>
+</div>
+{% endblock %}

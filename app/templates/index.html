@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Upload a lesion image{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    {% if not model_ready %}
+      <div class="alert alert-danger" role="alert">
+        <h5 class="alert-heading">No model loaded</h5>
+        <p class="mb-0">{{ checkpoint_hint }}</p>
+      </div>
+    {% endif %}
+
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="h4 card-title mb-3">Classify a dermoscopic image</h1>
+        <p class="text-body-secondary">
+          Upload a single lesion photograph. The model returns a benign/malignant
+          probability and a Grad-CAM heatmap showing which image regions drove the
+          prediction.
+        </p>
+
+        <form action="{{ url_for('main.predict') }}" method="post" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="image" class="form-label">Image file</label>
+            <input
+              class="form-control"
+              type="file"
+              id="image"
+              name="image"
+              accept=".jpg,.jpeg,.png,.bmp,.webp"
+              required
+              {% if not model_ready %}disabled{% endif %}
+            />
+            <div class="form-text">JPG, PNG, BMP or WebP, up to 8 MB.</div>
+          </div>
+          <button type="submit" class="btn btn-primary" {% if not model_ready %}disabled{% endif %}>
+            Analyse image
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card mt-4 border-0 bg-transparent">
+      <div class="card-body px-0">
+        <h2 class="h6 text-uppercase text-body-secondary">How to read the output</h2>
+        <ul class="small text-body-secondary mb-0">
+          <li>The probability is the model's confidence, not a measure of risk.</li>
+          <li>
+            The Grad-CAM overlay highlights pixels that most increased the malignant
+            logit. It explains the model, not the biology.
+          </li>
+          <li>
+            The decision threshold defaults to 0.50. Tune it with
+            <code>python -m src.evaluate</code>, which reports a high-sensitivity
+            operating point as well.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

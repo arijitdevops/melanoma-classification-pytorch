@@ -1,0 +1,37 @@
+# ResNet-50 baseline: the strongest of the bundled configs, slowest to train.
+data:
+  data_dir: ../_datasets/melanoma_skin_cancer
+  val_split: 0.15
+  image_size: 224
+  batch_size: 32
+  num_workers: 4
+  pin_memory: true
+
+model:
+  name: resnet50
+  pretrained: true
+  freeze_backbone: false
+  num_classes: 2
+  dropout: 0.3
+
+train:
+  epochs: 25
+  lr: 0.0002
+  weight_decay: 0.0001
+  warmup_epochs: 2
+  min_lr: 0.000001
+  label_smoothing: 0.05
+  grad_clip: 1.0
+  amp: true
+  balance: sampler
+  early_stopping_patience: 6
+  checkpoint_dir: checkpoints
+  log_dir: runs
+
+eval:
+  target_sensitivity: 0.95
+  reports_dir: reports
+  figures_dir: reports/figures
+
+seed: 42
+device: auto

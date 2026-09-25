@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Skin Lesion Classifier{% endblock %}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}" />
+  </head>
+  <body class="bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-semibold" href="{{ url_for('main.index') }}">
+          Skin Lesion Classifier
+        </a>
+        <span class="navbar-text small text-warning">Research demo &mdash; not a medical device</span>
+      </div>
+    </nav>
+
+    <div class="alert alert-warning rounded-0 border-0 mb-0 text-center small" role="alert">
+      <strong>Medical disclaimer.</strong> This tool is a machine-learning demonstration for
+      research and education only. It is not a diagnostic device, has not been clinically
+      validated, and must never be used to make or defer a medical decision. If you are
+      concerned about a skin lesion, consult a qualified dermatologist.
+    </div>
+
+    <main class="container py-4">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="container py-4 text-center text-body-secondary small">
+      <p class="mb-1">
+        PyTorch transfer learning with Grad-CAM explanations.
+        JSON API: <code>POST /api/predict</code> &middot; <code>GET /api/health</code>
+      </p>
+      <p class="mb-0">Sample project &mdash; no clinical claims are made.</p>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

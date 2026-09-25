@@ -1,0 +1,37 @@
+# EfficientNet-B0: lighter and faster than ResNet-50, tolerates a larger batch size.
+data:
+  data_dir: ../_datasets/melanoma_skin_cancer
+  val_split: 0.15
+  image_size: 224
+  batch_size: 64
+  num_workers: 4
+  pin_memory: true
+
+model:
+  name: efficientnet_b0
+  pretrained: true
+  freeze_backbone: false
+  num_classes: 2
+  dropout: 0.2
+
+train:
+  epochs: 20
+  lr: 0.0005
+  weight_decay: 0.00001
+  warmup_epochs: 2
+  min_lr: 0.000001
+  label_smoothing: 0.05
+  grad_clip: 1.0
+  amp: true
+  balance: weights
+  early_stopping_patience: 5
+  checkpoint_dir: checkpoints
+  log_dir: runs
+
+eval:
+  target_sensitivity: 0.95
+  reports_dir: reports
+  figures_dir: reports/figures
+
+seed: 42
+device: auto

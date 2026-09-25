@@ -1,0 +1,35 @@
+/* Small overrides on top of Bootstrap 5. */
+
+body {
+  min-height: 100vh;
+}
+
+main {
+  max-width: 1100px;
+}
+
+.result-image {
+  max-height: 340px;
+  object-fit: contain;
+}
+
+.progress {
+  height: 0.6rem;
+}
+
+.card {
+  border-radius: 0.6rem;
+}
+
+footer code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.06);
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  footer code {
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+}

@@ -1,0 +1,34 @@
+# Core deep-learning stack
+torch>=2.2,<3
+torchvision>=0.17,<1
+
+# Numerics, imaging and plotting
+numpy>=1.24,<3
+pillow>=10.0,<13
+matplotlib>=3.7,<4
+
+# Metrics and data handling
+scikit-learn>=1.3,<2
+pandas>=2.0,<4
+
+# Configuration and CLI ergonomics
+pyyaml>=6.0,<7
+python-dotenv>=1.0,<2
+tqdm>=4.66,<5
+
+# Experiment tracking
+tensorboard>=2.14,<3
+
+# Web demo
+flask>=3.0,<4
+
+# ONNX export and optional verification
+onnx>=1.15,<2
+onnxruntime>=1.17,<2
+onnxscript>=0.3
+
+# Dataset download (scripts/download_data.py)
+kagglehub>=0.3
+
+# Testing
+pytest>=7.4,<10
